@@ -2,7 +2,7 @@
   <a-layout id="components-layout-demo-fixed-sider">
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
       <div class="logo"></div>
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
+      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['3']">
         <a-menu-item key="1" @click="msg">
           <a-icon type="user" />
           <span class="nav-text">个人信息</span>
@@ -38,17 +38,6 @@
       <a-descriptions-item label="籍贯">{{data.hometown}}</a-descriptions-item>
       <a-descriptions-item label="号码">{{data.phoneNumber}}</a-descriptions-item>
       <a-descriptions-item label="今日作业">
-        Data disk type: MongoDB
-        <br />
-        Database version: 3.4
-        <br />
-        Package: dds.mongo.mid
-        <br />
-        Storage space: 10 GB
-        <br />
-        Replication factor: 3
-        <br />
-        Region: East China 1
       </a-descriptions-item>
     </a-descriptions>
   </div>
@@ -62,16 +51,17 @@
       title="学生成绩"
       bordered
       :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+      
     >
-      <a-descriptions-item label="语文">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="数学">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="英语">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="体育">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="美术">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="音乐">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="音乐">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="音乐">{{scouredata}}</a-descriptions-item>
-      <a-descriptions-item label="音乐">{{scouredata}}</a-descriptions-item>
+      <a-descriptions-item label="语文">{{score_data[0].score}}</a-descriptions-item>
+      <a-descriptions-item label="数学">{{score_data[1].score}}</a-descriptions-item>
+      <a-descriptions-item label="英语">{{score_data[2].score}}</a-descriptions-item>
+      <a-descriptions-item label="物理">{{score_data[3].score}}</a-descriptions-item>
+      <a-descriptions-item label="化学">{{score_data[4].score}}</a-descriptions-item>
+      <a-descriptions-item label="生物">{{score_data[5].score}}</a-descriptions-item>
+      <a-descriptions-item label="体育">{{score_data[6].score}}</a-descriptions-item>
+      <a-descriptions-item label="美术">{{score_data[7].score}}</a-descriptions-item>
+      <a-descriptions-item label="地理">{{score_data[8].score}}</a-descriptions-item>
 
     </a-descriptions>
   </div>
@@ -95,7 +85,8 @@
       <a-upload-dragger
     name="file"
     :multiple="true"
-    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+    method='post'
+    action="http://47.101.186.106:8000/main/student/homework"
     @change="handleChange"
   >
     <p class="ant-upload-drag-icon">
@@ -103,8 +94,7 @@
     </p>
     <p class="ant-upload-text">点 击 上 传 作 业 文 件</p>
     <p class="ant-upload-hint">
-      Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-      band files
+      支持手动上传和拖拽上传
     </p>
   </a-upload-dragger>
   </div>
@@ -134,21 +124,21 @@ export default {
       isLoad3: false,
       isLoad4: false,
       data: '',
-      scouredata: 0
+      score_data: []
     };
   },
   mounted: function(){
       this.response();
+      this.score()
   },
   methods: {
       response() {
         let that = this;
         let token_data = that.$route.params.token;
 
-        let url = 'http://localhost:8000/main/student/information';
+        let url = 'http://47.101.186.106:8000/main/student/information';
         axios.get(url, {params: {token: token_data}}).then(function(response){
             let result = response.data.data;
-            console.log(result)
             that.data = result
         })
       },
@@ -166,21 +156,29 @@ export default {
         this.isLoad4 = false;
       },
       score() {
-          this.isLoad = false;
-          this.isLoad2 = false;
+        this.isLoad = false;
+        this.isLoad2 = false;
         this.isLoad3 = true;
         this.isLoad4 = false;
+        let that = this;
+        let token_data = that.$route.params.token;
+        let url = 'http://47.101.186.106:8000/main/student/score';
+         axios.get(url, {params: {token: token_data}}).then(function(response){
+            let results = response.data.data;
+            console.log(results)
+            that.score_data = results
+        })
       },
       homewordk() {
-          this.isLoad = false;
-          this.isLoad2 = false;
+        this.isLoad = false;
+        this.isLoad2 = false;
         this.isLoad3 = false;
         this.isLoad4 = true;
       },
       handleChange(info) {
       const status = info.file.status;
       if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
+        console.log(info.file);
       }
       if (status === 'done') {
         this.$message.success(`${info.file.name} file uploaded successfully.`);
