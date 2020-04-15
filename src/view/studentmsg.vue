@@ -68,16 +68,16 @@
 
     <div v-if="isLoad4">
     <div>
-      <a-radio-group defaultValue="a" buttonStyle="solid">
-        <a-radio-button value="a">语文</a-radio-button>
-        <a-radio-button value="b">数学</a-radio-button>
-        <a-radio-button value="c">英语</a-radio-button>
-        <a-radio-button value="d">体育</a-radio-button>
-        <a-radio-button value="e">美术</a-radio-button>
-        <a-radio-button value="f">音乐</a-radio-button>
-        <a-radio-button value="g">音乐</a-radio-button>
-        <a-radio-button value="h">音乐</a-radio-button>
-        <a-radio-button value="i">音乐</a-radio-button>
+      <a-radio-group defaultValue="1" buttonStyle="solid" v-model="subjectch">
+        <a-radio-button value="1">语文</a-radio-button>
+        <a-radio-button value="2">数学</a-radio-button>
+        <a-radio-button value="3">英语</a-radio-button>
+        <a-radio-button value="4">物理</a-radio-button>
+        <a-radio-button value="5">化学</a-radio-button>
+        <a-radio-button value="6">生物</a-radio-button>
+        <a-radio-button value="7">体育</a-radio-button>
+        <a-radio-button value="8">美术</a-radio-button>
+        <a-radio-button value="9">地理</a-radio-button>
         
       </a-radio-group>
     </div>
@@ -125,6 +125,7 @@ export default {
       isLoad3: false,
       isLoad4: false,
       data: '',
+      subjectch: '1',
       score_data: []
     };
   },
@@ -180,7 +181,7 @@ export default {
         const formData = new FormData()
         formData.append('img', data.file)
         formData.append('token', this.$route.params.token)
-        formData.append('subject', 1)
+        formData.append('subject', this.subjectch)
         this.saveFile(formData)
       },
       saveFile(formData){
