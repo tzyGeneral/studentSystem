@@ -83,11 +83,12 @@
     </div>
     <div style="margin-top: 5%;">
       <a-upload-dragger
-    name="file"
+    name="img"
     :multiple="true"
     method='post'
     action="http://47.101.186.106:8000/main/student/homework"
     @change="handleChange"
+    :customRequest="customRequest"
   >
     <p class="ant-upload-drag-icon">
       <a-icon type="inbox" />
@@ -174,6 +175,27 @@ export default {
         this.isLoad2 = false;
         this.isLoad3 = false;
         this.isLoad4 = true;
+      },
+      customRequest(data){
+        const formData = new FormData()
+        formData.append('img', data.file)
+        formData.append('token', this.$route.params.token)
+        formData.append('subject', 1)
+        this.saveFile(formData)
+      },
+      saveFile(formData){
+        let that = this
+        let url = 'http://47.101.186.106:8000/main/student/homework'
+        axios.post(
+          url, formData
+        ).then(function(response){
+          if (response.data.status == 200){
+            that.$message.success(`file uploaded successfully.`);
+          }else{
+            that.$message.error(`file upload failed.`);
+          }
+        })
+
       },
       handleChange(info) {
       const status = info.file.status;
