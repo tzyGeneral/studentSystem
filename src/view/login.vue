@@ -77,8 +77,12 @@ export default {
                 {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
             ).then(function (response){
                 if (response.data.status == 200){
+                    if (that.form.resource == '1'){
+                        that.$router.push({ name: "studentmsg", params:{token: response.data.token}})
+                    }else if(that.form.resource == '2'){
+                        that.$router.push({ name: "teacher", params:{token: response.data.token}})
+                    }
     
-                    that.$router.push({ name: "studentmsg", params:{token: response.data.token}})
                 }else if(response.data.status == 203){
                     that.isLoginError = true
                 }
