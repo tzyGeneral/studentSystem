@@ -93,7 +93,7 @@ export default {
             type: that.form.resource
         });
         console.log(data)
-        let url = 'http://localhost:8000/main/api/login';
+        let url = 'http://47.101.186.106:8000/main/api/login';
         if (that.form.name && that.form.pass && that.form.resource){
             console.log('开始请求接口')
             axiao.post(url, data,
