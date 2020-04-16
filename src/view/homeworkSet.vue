@@ -88,22 +88,22 @@ export default {
   methods: {
     onSubmit() {
         this.form.token = this.$route.params.token
-        // let data = QS.stringify({
-        //     token: this.form.token,
-        //     homeworkName: this.form.homeworkName,
-        //     classId: this.form.classId,
-        //     subjectId: this.form.subjectId,
-        //     updatetime: this.form.updatetime.format('YYYY-MM-DD HH:mm:ss'),
-        //     text: this.form.text,
-        // });
+        let data = QS.stringify({
+            token: this.form.token,
+            homeworkName: this.form.homeworkName,
+            classId: this.form.classId,
+            subjectId: this.form.subjectId,
+            updatetime: this.form.updatetime.format('YYYY-MM-DD HH:mm:ss'),
+            text: this.form.text,
+        });
        let url = 'http://47.101.186.106:8000/main/teacher/putHomework';
        console.log(this.classIdPut)
        console.log(this.form)
-    //      axios.post(url, data ,
-    //         {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
-    //         ).then(function(response){
-    //             let results = response.data.data;
-    //     })
+         axios.post(url, data ,
+            {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
+            ).then(function(response){
+                let results = response.data.data;
+        })
     },
   },
 };
