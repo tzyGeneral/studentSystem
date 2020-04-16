@@ -90,7 +90,6 @@ export default {
   },
   mounted: function(){
       this.response();
-      this.score()
   },
   methods: {
       response() {
