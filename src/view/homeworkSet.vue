@@ -18,7 +18,7 @@
                     <a-select-option value="wuli">
                         物理
                     </a-select-option>
-                    <a-select-option value="dili">
+                    <a-select-option value="huaxue">
                         化学
                     </a-select-option>
                     <a-select-option value="shengwu">
@@ -73,8 +73,8 @@ export default {
   },
   methods: {
     onSubmit() {
-       let url = 'http://47.101.186.106:8000/main/student/score';
-         axios.get(url, this.form ,
+       let url = 'http://47.101.186.106:8000/main/teacher/putHomework';
+         axios.post(url, this.form ,
             {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
             ).then(function(response){
                 let results = response.data.data;
