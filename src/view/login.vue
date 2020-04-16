@@ -80,7 +80,7 @@ export default {
                     if (that.form.resource == '1'){
                         that.$router.push({ name: "studentmsg", params:{token: response.data.token}})
                     }else if(that.form.resource == '2'){
-                        that.$router.push({ name: "teacher", params:{token: response.data.token}})
+                        that.$router.push({ name: "teacherIndex", params:{token: response.data.token}})
                     }
     
                 }else if(response.data.status == 203){
