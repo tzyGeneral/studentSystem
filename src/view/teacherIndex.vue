@@ -48,7 +48,7 @@
   </div>
 
   <div v-if="isLoad3" style="mar">
-    <homeworkSet></homeworkSet>
+    <homeworkSet :classIdPut="classInfo"></homeworkSet>
   </div>
 
     <div v-if="isLoad4">
@@ -84,7 +84,8 @@ export default {
       isLoad4: false,
       data: '',
       subjectch: '1',
-      score_data: []
+      score_data: [],
+      classInfo: [],
     };
   },
   mounted: function(){
@@ -98,7 +99,9 @@ export default {
         let url = 'http://47.101.186.106:8000/main/teacher/information';
         axios.get(url, {params: {token: token_data}}).then(function(response){
             let result = response.data.data;
+            let cInfo = response.data.classInfo
             that.data = result
+            that.classInfo = cInfo
         })
       },
       kecheng() {
