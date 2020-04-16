@@ -2,7 +2,7 @@
   <a-layout id="components-layout-demo-fixed-sider">
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
       <div class="logo"></div>
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['3']">
+      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
         <a-menu-item key="1" @click="msg">
           <a-icon type="user" />
           <span class="nav-text">个人信息</span>
@@ -18,6 +18,10 @@
         <a-menu-item key="4" @click="homewordk">
           <a-icon type="bar-chart" />
           <span class="nav-text">上传作业</span>
+        </a-menu-item>
+        <a-menu-item key="5" @click="workmsg">
+          <a-icon type="video-camera" />
+          <span class="nav-text">作业信息</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
@@ -40,6 +44,28 @@
       <a-descriptions-item label="今日作业">
       </a-descriptions-item>
     </a-descriptions>
+  </div>
+  <div v-if="isLoad5">
+    <div v-for="(one, index) in data2" :key="index">
+    <a-comment>
+    <template slot="actions">
+      <span key="comment-basic-reply-to">{{one.subject}}</span>
+    </template>
+    <a slot="author">{{one.teacher}}</a>
+    <a-avatar
+      src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+      alt="Han Solo"
+      slot="avatar"
+    />
+    <p slot="content">
+      {{one.text}}
+    </p>
+    <a-tooltip slot="datetime" :title=one.updatetime>
+      <span>{{one.updatetime}}</span>
+    </a-tooltip>
+  </a-comment>
+  <div class="tableTitle"><span class="midText"></span></div>
+    </div>
   </div>
 
   <div v-if="isLoad2">
@@ -124,14 +150,15 @@ export default {
       isLoad2: false,
       isLoad3: false,
       isLoad4: false,
+      isLoad5: false,
       data: '',
+      data2: '',
       subjectch: '1',
       score_data: []
     };
   },
   mounted: function(){
       this.response();
-      this.score()
   },
   methods: {
       response() {
@@ -150,18 +177,21 @@ export default {
         that.isLoad2 = true;
         that.isLoad3 = false;
         that.isLoad4 = false;
+        that.isLoad5 = false;
       },
       msg() {
         this.isLoad = true;
         this.isLoad2 = false;
         this.isLoad3 = false;
         this.isLoad4 = false;
+        this.isLoad5 = false;
       },
       score() {
         this.isLoad = false;
         this.isLoad2 = false;
         this.isLoad3 = true;
         this.isLoad4 = false;
+        this.isLoad5 = false;
         let that = this;
         let token_data = that.$route.params.token;
         let url = 'http://47.101.186.106:8000/main/student/score';
@@ -176,6 +206,21 @@ export default {
         this.isLoad2 = false;
         this.isLoad3 = false;
         this.isLoad4 = true;
+        this.isLoad5 = false;
+      },
+      workmsg(){
+        this.isLoad = false;
+        this.isLoad2 = false;
+        this.isLoad3 = false;
+        this.isLoad4 = false;
+        this.isLoad5 = true;
+        let that = this;
+        let token_data = that.$route.params.token;
+            axios.get('http://47.101.186.106:8000/main/student/getWork', {params: {token: token_data}}).then(function(response){
+            let result2 = response.data.data;
+            that.data2 = result2
+        })
+        console.log(that.data2)        
       },
       customRequest(data){
         const formData = new FormData()
@@ -220,4 +265,21 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }
+.tableTitle {
+    position: relative;
+    margin: 0 auto;
+    width: 600px;
+    height: 1px;
+    background-color: #d4d4d4;
+    text-align: center;
+    font-size: 16px;
+    color: rgba(101, 101, 101, 1);
+  }
+ .midText {
+    position: absolute;
+    left: 50%;
+    background-color: #ffffff;
+    padding: 0 15px;
+    transform: translateX(-50%) translateY(-50%);
+  }
 </style>
