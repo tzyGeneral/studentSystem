@@ -23,7 +23,7 @@ export default new Router({
       component: studentmsg
     },
     {
-      path: '/homeworkSet',
+      path: '/homeworkSet:token',
       name: 'homeworkSet',
       component: homeworkSet
     },
